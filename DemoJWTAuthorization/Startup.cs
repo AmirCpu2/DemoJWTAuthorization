@@ -33,9 +33,9 @@ namespace DemoJWTAuthorization
 
             //Creat Midelware Authentication
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-                .AddJwtBearer(options => {
+                .AddJwtBearer(op => {
                     //Token Cofigure
-                    options.TokenValidationParameters = new Microsoft.IdentityModel.Tokens.TokenValidationParameters
+                    op.TokenValidationParameters = new Microsoft.IdentityModel.Tokens.TokenValidationParameters
                     {
                         ValidateIssuer = true,
                         ValidateAudience = true,
@@ -48,6 +48,19 @@ namespace DemoJWTAuthorization
 
                     };
                 });
+
+            services.AddCors(op => {
+
+                op.AddPolicy("DeveloperCors", bl => 
+                    {
+                        bl.AllowAnyOrigin()
+                        .AllowAnyMethod()
+                        .AllowAnyHeader()
+                        .Build();
+                    });
+            });
+
+            services.AddMvc();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -68,6 +81,9 @@ namespace DemoJWTAuthorization
             {
                 endpoints.MapControllers();
             });
+
+            //config Core for develop
+            app.UseCors("DeveloperCors");
         }
     }
 }
