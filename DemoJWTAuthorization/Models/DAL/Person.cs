@@ -15,7 +15,7 @@ namespace DemoJWTAuthorization.Models.DAL
             Accounts = new HashSet<Account>();
         }
 
-        public long ID { get; set; }
+        public long Id { get; set; }
 
         [Required]
         [StringLength(256)]

@@ -9,7 +9,7 @@ namespace DemoJWTAuthorization.Models.DAL
     [Table("Account",Schema = "SSO")]
     public partial class Account
     {
-        public int ID { get; set; }
+        public int Id { get; set; }
 
         [Required]
         [StringLength(100)]
@@ -18,7 +18,6 @@ namespace DemoJWTAuthorization.Models.DAL
         [Required]
         [StringLength(100)]
         public string Password { get; set; }
-
         public DateTime? RegisterDate { get; set; }
 
         public bool Active { get; set; }

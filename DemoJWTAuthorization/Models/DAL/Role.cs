@@ -15,7 +15,7 @@ namespace DemoJWTAuthorization.Models.DAL
             Roles1 = new HashSet<Role>();
         }
 
-        public int ID { get; set; }
+        public int Id { get; set; }
 
         [Required]
         [StringLength(150)]
