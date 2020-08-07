@@ -9,11 +9,13 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Tokens;
+using MM = DemoJWTAuthorization.Models.DAL;
 
 namespace DemoJWTAuthorization
 {
@@ -42,8 +44,8 @@ namespace DemoJWTAuthorization
                         ValidateLifetime = true,
                         ValidateIssuerSigningKey = true,
 
-                        ValidIssuer = "http://localhost:8080",
-                        ValidAudience = "http://localhost:8080",
+                        ValidIssuer = "http://localhost:44386",
+                        ValidAudience = "http://localhost:44386",
                         IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("P@ssM0rdKeyAuthorization"))
 
                     };
@@ -61,6 +63,13 @@ namespace DemoJWTAuthorization
             });
 
             services.AddMvc();
+
+            #region Db Context
+
+            services.AddDbContext<MM.Context>(op =>
+            { op.UseSqlServer("Data Source =.;Initial Catalog=silkrood_DemoWJTAutorization;Integrated Security=true;user id=sa;password=B@mdad!@#246;"); });
+
+            #endregion
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
