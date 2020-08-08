@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
@@ -22,18 +23,46 @@ namespace WebApp.Controllers
         
         public IActionResult Index()
         {
-            return View();
+            return View("Login");
         }
-
 
         public IActionResult Login()
         {
-            return PartialView();
+            return View();
+        }
+        
+        [HttpPost]
+        public IActionResult Login([FromBody,Required] AccountLogin account)
+        {
+
+            var re = new Public.RestClient();
+
+            re.HttpMethod = Public.Enums.HttpVerb.POST;
+            
+            re.EndPoint = System.IO.Path.Combine("http://Localhost:1080", "/api/");
+            re.PostJSON = "";
+
+            return RedirectToAction("Admin");
         }
 
         public IActionResult Admin()
         {
-            return PartialView();
+            //Get Header
+            var header = this.Request.Headers;
+            header.TryGetValue("Authorization", out var v);
+
+            //var token = Public.RestClient.Instanse.AuthorizationToken = v.ToString().Split(" ")[1];
+
+            //if jwd not Defunde
+            if (String.IsNullOrEmpty(v))
+            {
+                ViewBag["Message"] = "شما باید دوباره وارد شوید";
+                ViewBag["token"] = "";
+
+                return View("Login");
+            }
+
+            return View();
         }
 
     }
