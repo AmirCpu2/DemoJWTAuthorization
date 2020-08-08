@@ -2,7 +2,17 @@
     ViewData["Title"] = "Home Page";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+<div ng-app="MainModule">
+    <div ng-view="login"></div>
 </div>
+
+@section Scripts{
+
+    <script src="~/js/public/angular.js"></script>
+    <script src="~/js/public/angular-route.min.js"></script>
+    <script src="~/Angular/Module.js"></script>
+    <script src="~/Angular/Service.js"></script>
+    <script src="~/Angular/controller/LoginController.js"></script>
+    <script src="~/Angular/controller/AdminController.js"></script>
+
+}

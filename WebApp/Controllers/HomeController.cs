@@ -22,7 +22,18 @@ namespace WebApp.Controllers
         
         public IActionResult Index()
         {
-            return View("Login");
+            return View();
+        }
+
+
+        public IActionResult Login()
+        {
+            return PartialView();
+        }
+
+        public IActionResult Admin()
+        {
+            return PartialView();
         }
 
     }
