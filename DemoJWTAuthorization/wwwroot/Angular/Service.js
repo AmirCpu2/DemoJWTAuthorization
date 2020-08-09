@@ -1,18 +1,18 @@
 ﻿app.service("Service", function($http) {
 
     this.getTaskList = function() {
-        return $http.get("https://localhost:44386/api/Task/GetAll");
+        return $http.get(`${location.protocol}//${location.host}/api/Task/GetAll`);
     };
 
     this.getAccount = function(id) {
-        return $http.get("https://localhost:44386/api/Account/Get/" + id);
+        return $http.get(`${location.protocol}//${location.host}/api/Account/Get/` + id);
     };
     
     this.TokenIsValid = function () {
         var Token = localStorage.getItem("jwtToken");
         $http({
             method: "Get",
-            url: "https://localhost:44386/api/Authentication/tokenIsValid",
+            url: `${location.protocol}//${location.host}/api/Authentication/tokenIsValid`,
             Headers: { "Authorization": "Bearer " + Token }
             })
             .then(function success(response) {
@@ -34,7 +34,7 @@
         
         $http({
             method: "Post",
-            url: 'https://localhost:44386/api/Authentication/login',
+            url: `${location.protocol}//${location.host}/api/Authentication/login`,
             data: { "UserName": username, "Password": Password }
         }).then(function success(response) {
             

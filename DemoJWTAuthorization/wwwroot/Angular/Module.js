@@ -30,7 +30,7 @@ app.config(["$routeProvider", "$locationProvider", function ($routeProvider, $lo
 
     $.ajax({
         type: "Get",
-        url: "https://localhost:44386/api/Authentication/tokenIsValid",
+        url: `${location.protocol}//${location.host}/api/Authentication/tokenIsValid`,
         headers: { "Authorization": "Bearer " + localStorage.getItem("jwtToken") },
         success: function (response) {
             if (response != null) {
