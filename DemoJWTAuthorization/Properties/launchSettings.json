@@ -7,7 +7,7 @@
       "sslPort": 0
     },
     "iisExpress": {
-      "applicationUrl": "http://localhost:4114",
+      "applicationUrl": "http://localhost:44386",
       "sslPort": 44386
     }
   },
@@ -16,7 +16,7 @@
     "IIS Express": {
       "commandName": "IISExpress",
       "launchBrowser": true,
-      "launchUrl": "https://localhost:44386/api/Authentication/Test",
+      "launchUrl": "https://localhost:44386/",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       }

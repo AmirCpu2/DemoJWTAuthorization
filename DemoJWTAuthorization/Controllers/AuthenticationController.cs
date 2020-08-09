@@ -24,13 +24,13 @@ namespace DemoJWTAuthorization.Controllers
     [ApiController]
     public class AuthenticationController : ControllerBase
     {
-        private Context _context;
         private AccountRepository _account;
+        private AccountLogRepository _accountLog;
 
         public AuthenticationController(Context context)
         {
-            _context = context;
             _account = new AccountRepository(context);
+            _accountLog = new AccountLogRepository(context);
         }
 
         [HttpPost,Route("login")]
@@ -43,14 +43,14 @@ namespace DemoJWTAuthorization.Controllers
         {
 
             //Get Hash PassWord
-            var hashPassword = _account.GetAccountByUserName(account.UserName)?.Password;
+            var hashPassword = _account.GetByUserName(account.UserName)?.Password;
 
             //UserName ,PassWord Check
             if (hashPassword == null || !hashPassword.Equals(PublicFunction.GetHash(account.Password)))
                 return Unauthorized();
 
             //Add Log
-            //..
+            _accountLog.AddForse(_account.GetByUserName(account.UserName).Id,Public.Enums.AccountLogState.login);
 
             //Logined
             var secretKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("P@ssM0rdKeyAuthorization"));
@@ -62,8 +62,8 @@ namespace DemoJWTAuthorization.Controllers
             };
 
             var tokenOptions = new JwtSecurityToken(
-                issuer: "http://localhost:44386",//$"http://{this.Request.Host}",
-                audience: "http://localhost:44386",//$"http://{this.Request.Host}",
+                issuer: $"http://{this.Request.Host}",
+                audience: $"http://{this.Request.Host}",
                 claims: claimes,
                 expires: DateTime.Now.AddMinutes(20),
                 signingCredentials: signinCredenrials
@@ -71,7 +71,7 @@ namespace DemoJWTAuthorization.Controllers
 
             var tokenString = new JwtSecurityTokenHandler().WriteToken(tokenOptions);
 
-            return Ok(new { Token = tokenString });
+            return Ok(new { Token = tokenString , Id = _account.GetByUserName(account.UserName).Id });
         }
 
         [HttpPost, Route("loginOut")]
@@ -80,35 +80,51 @@ namespace DemoJWTAuthorization.Controllers
         /// </summary>
         /// <param name="token">Account Model</param>
         /// <returns>bool state</returns>
-        public IActionResult LogOut([FromBody, Required]  string token)
+        public IActionResult LogOut([FromBody, Required]  VM.AccountLogin account)
         {
-            return null;
+
+            //Get Hash PassWord
+            var hashPassword = _account.GetByUserName(account.UserName)?.Password;
+
+            //UserName ,PassWord Check
+            if (hashPassword == null || !hashPassword.Equals(PublicFunction.GetHash(account.Password)))
+                return Unauthorized();
+
+            //Add Log
+            _accountLog.AddForse(_account.GetByUserName(account.UserName).Id, Public.Enums.AccountLogState.logout);
+
+            //Logined
+            var secretKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("P@ssM0rdKeyAuthorization"));
+            var signinCredenrials = new SigningCredentials(secretKey, SecurityAlgorithms.HmacSha256);
+            var claimes = new List<Claim>
+            {
+                new Claim(ClaimTypes.Name,account.UserName),
+                new Claim(ClaimTypes.Role,"Manager")
+            };
+
+            var tokenOptions = new JwtSecurityToken(
+                issuer: $"http://{this.Request.Host}",
+                audience: $"http://{this.Request.Host}",
+                claims: claimes,
+                expires: DateTime.Now.AddMinutes(20),
+                signingCredentials: signinCredenrials
+            );
+
+            var tokenString = new JwtSecurityTokenHandler().WriteToken(tokenOptions);
+
+            return Ok();
         }
 
-
-        [HttpPost, Route("add")]
-        /// <summary>
-        /// This Method From add User
-        /// </summary>
-        /// <param name="user">Account Model</param>
-        /// <returns>result entity from DataBase</returns>
-        public IActionResult Add([FromBody, Required]  VM.Account account)
+        [HttpGet,Authorize(Roles = "Manager"),Route("tokenIsValid")]
+        public bool TokenIsValid() 
         {
-            return Content(JObject.FromObject(_account.AddAccount(account)).ToString());
+            return true;
         }
 
-
-        [HttpGet, Route("Test")]
-        [Authorize(Roles = "Manager")]
-        public IActionResult Test()
+        [HttpGet, Route("test")]
+        public bool TokenIsValidw()
         {
-            return Content("hi");
-        }
-
-        [HttpGet, Route("amir"), Authorize(Roles ="Manager")]
-        public IActionResult amir()
-        {
-            return Content("hi");
+            return true;
         }
     }
 }

@@ -7,11 +7,12 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace DemoJWTAuthorization.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/Task")]
     [ApiController]
     public class TaskController : ControllerBase
     {
-        public IActionResult GetListTask() 
+        [Route("getAll")]
+        public IActionResult GetAll() 
         {
             return null;
         }

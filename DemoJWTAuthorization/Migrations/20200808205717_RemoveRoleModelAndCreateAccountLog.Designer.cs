@@ -4,14 +4,16 @@ using DemoJWTAuthorization.Models.DAL;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace DemoJWTAuthorization.Migrations
 {
     [DbContext(typeof(Context))]
-    partial class ContextModelSnapshot : ModelSnapshot
+    [Migration("20200808205717_RemoveRoleModelAndCreateAccountLog")]
+    partial class RemoveRoleModelAndCreateAccountLog
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -75,7 +77,7 @@ namespace DemoJWTAuthorization.Migrations
 
                     b.HasIndex("AccountId");
 
-                    b.ToTable("AccountLog","SSO");
+                    b.ToTable("SSO","SSO");
                 });
 
             modelBuilder.Entity("DemoJWTAuthorization.Models.DAL.Person", b =>

@@ -70,12 +70,7 @@ namespace DemoJWTAuthorization.Models.VM
                 UserName = entity.UserName,
                 Password = entity.Password,
                 Active = entity.Active,
-                FialedRepeat = entity.FialedRepeat,
-                InheritTypeID = entity.InheritTypeID,
-                LastFialed = entity.LastFialed,
-                LastLogin = entity.LastLogin,
                 LastPasswordChanges = entity.LastPasswordChanges,
-                LoginCount = entity.LoginCount,
                 Person = entity.Person,
                 PersonID = entity.PersonID,
                 RegisterDate = entity.RegisterDate
@@ -90,12 +85,7 @@ namespace DemoJWTAuthorization.Models.VM
                 UserName = entity.UserName,
                 Password = entity.Password,
                 Active = entity.Active,
-                FialedRepeat = entity.FialedRepeat,
-                InheritTypeID = entity.InheritTypeID,
-                LastFialed = entity.LastFialed,
-                LastLogin = entity.LastLogin,
                 LastPasswordChanges = entity.LastPasswordChanges,
-                LoginCount = entity.LoginCount,
                 Person = entity.Person,
                 PersonID = entity.PersonID,
                 RegisterDate = entity.RegisterDate
@@ -105,16 +95,16 @@ namespace DemoJWTAuthorization.Models.VM
         public static MM.Account Map(AccountLogin entity) => new MM.Account() { UserName=entity.UserName, Password = entity.Password };
     }
 
-    public class AccountRepository
+    internal class AccountRepository
     {
-        public AccountRepository(Context context)
+        internal AccountRepository(Context context)
         {
             DB = context;
         }
 
         private Context DB;
 
-        public Account AddAccount(Account account)
+        internal Account Add(Account account)
         {
             if (account == null)
                 return null;
@@ -130,25 +120,39 @@ namespace DemoJWTAuthorization.Models.VM
             return Mapper.Map(DB.Accounts.Where(q => q.UserName == account.UserName).FirstOrDefault());
         }
 
-        public Account GetAccountByUserName(string userName)
+        internal Account Edit(Account account)
+        {
+            if (account?.Id == null)
+                return null;
+
+            var MMAcount = Mapper.Map(account);
+
+            DB.Accounts.Update(MMAcount);
+
+            DB.SaveChanges();
+
+            return Mapper.Map(DB.Accounts.Where(q => q.UserName == account.UserName).FirstOrDefault());
+        }
+
+        internal Account GetByUserName(string userName)
         {
             if (userName == null)
                 return null;
 
-            return Mapper.Map(DB.Accounts.Where(q => q.UserName == userName).FirstOrDefault());
+            return Mapper.Map(DB.Accounts.Where(q => q.UserName.ToLower() == userName.ToLower()).FirstOrDefault());
         }
 
-        public Account GetAccountById(int Id)
+        internal Account GetById(int Id)
         {
 
             return Mapper.Map(DB.Accounts.Where(q => q.Id == Id).FirstOrDefault());
         }
 
-        public IEnumerable<Account> GetAll() => DB.Accounts.ToList().Select(Mapper.Map);
+        internal IEnumerable<Account> GetAll() => DB.Accounts.ToList().Select(Mapper.Map);
 
-        public IQueryable<MM.Account> QueryableGetAll() => DB.Set<MM.Account>();
+        internal IQueryable<MM.Account> QueryableGetAll() => DB.Set<MM.Account>();
 
-        public bool RemoveAccount(int id) 
+        internal bool Remove(int id)
         {
             var entity = DB.Accounts.Where(q => q.Id.Equals(id)).FirstOrDefault();
 
@@ -156,6 +160,8 @@ namespace DemoJWTAuthorization.Models.VM
                 return false;
 
             entity.Active = false;
+
+            Add(Mapper.Map(entity));
 
             return true;
         }

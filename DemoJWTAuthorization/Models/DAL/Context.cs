@@ -15,7 +15,7 @@ namespace DemoJWTAuthorization.Models.DAL
 
         public virtual DbSet<Person> People { get; set; }
         public virtual DbSet<Account> Accounts { get; set; }
-        public virtual DbSet<Role> Roles { get; set; }
+        public virtual DbSet<AccountLog> AccountLogs { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -24,14 +24,14 @@ namespace DemoJWTAuthorization.Models.DAL
                     .WithOne(e => e.Person).IsRequired()
                         .OnDelete(DeleteBehavior.Cascade);
 
-            modelBuilder.Entity<Role>()
-                .HasMany(e => e.Roles1)
-                    .WithOne(e => e.Role1)
-                        .HasForeignKey(e => e.ParentRoleID);
+            modelBuilder.Entity<Account>()
+                .HasMany(e => e.AccountLogs)
+                    .WithOne(e => e.Account)
+                        .HasForeignKey(e => e.AccountId);
 
             modelBuilder.Entity<Person>().ToTable("Person", "Profile");
             modelBuilder.Entity<Account>().ToTable("Account", "SSO");
-            modelBuilder.Entity<Role>().ToTable("Role", "SSO");
+            modelBuilder.Entity<AccountLog>().ToTable("AccountLog", "SSO");
         }
 
     }

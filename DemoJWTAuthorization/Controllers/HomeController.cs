@@ -26,28 +26,17 @@ namespace DemoJWTAuthorization.Controllers
 
         public IActionResult Index()
         {
-            return View("Login");
+            return View();
         }
 
-        [Authorize(Roles = "Manager")]
+        public IActionResult Login()
+        {
+            return PartialView();
+        }
+
         public IActionResult Admin()
         {
-            //Get Header
-            var header = this.Request.Headers;
-            header.TryGetValue("Authorization", out var v);
-
-            //var token = Public.RestClient.Instanse.AuthorizationToken = v.ToString().Split(" ")[1];
-
-            //if jwd not Defunde
-            if (String.IsNullOrEmpty(v))
-            {
-                ViewBag["Message"] = "شما باید دوباره وارد شوید";
-                ViewBag["token"] = "";
-
-                return View("Login");
-            }
-
-            return View();
+            return PartialView();
         }
     }
 }

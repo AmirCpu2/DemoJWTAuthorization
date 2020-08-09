@@ -9,7 +9,6 @@ namespace DemoJWTAuthorization.Models.DAL
     [Table("Person", Schema = "Profile")]
     public partial class Person
     {
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public Person()
         {
             Accounts = new HashSet<Account>();
@@ -109,7 +108,6 @@ namespace DemoJWTAuthorization.Models.DAL
 
         public string FieldActivity { get; set; }
 
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Account> Accounts { get; set; }
     }
 }
