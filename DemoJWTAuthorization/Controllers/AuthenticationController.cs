@@ -5,6 +5,7 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Security.Claims;
 using System.Security.Cryptography;
+using System.Security.Principal;
 using System.Text;
 using System.Threading.Tasks;
 using DemoJWTAuthorization.Models;
@@ -33,12 +34,12 @@ namespace DemoJWTAuthorization.Controllers
             _accountLog = new AccountLogRepository(context);
         }
 
-        [HttpPost,Route("login")]
         /// <summary>
         /// This Method From Login User
         /// </summary>
         /// <param name="account">AccountLogin Model</param>
         /// <returns>Token</returns>
+        [HttpPost,Route("login")]
         public IActionResult Login ([FromBody,Required]  VM.AccountLogin account)
         {
 
@@ -68,18 +69,18 @@ namespace DemoJWTAuthorization.Controllers
                 expires: DateTime.Now.AddMinutes(20),
                 signingCredentials: signinCredenrials
             );
-
+            
             var tokenString = new JwtSecurityTokenHandler().WriteToken(tokenOptions);
 
             return Ok(new { Token = tokenString , Id = _account.GetByUserName(account.UserName).Id });
         }
 
-        [HttpPost, Route("loginOut")]
         /// <summary>
         /// This Method From LoginOut User
         /// </summary>
         /// <param name="token">Account Model</param>
         /// <returns>bool state</returns>
+        [HttpPost, Route("loginOut")]
         public IActionResult LogOut([FromBody, Required]  VM.AccountLogin account)
         {
 
@@ -115,16 +116,13 @@ namespace DemoJWTAuthorization.Controllers
             return Ok();
         }
 
-        [HttpGet,Authorize(Roles = "Manager"),Route("tokenIsValid")]
-        public bool TokenIsValid() 
-        {
-            return true;
-        }
+        /// <summary>
+        /// Token Validation Checker
+        /// </summary>
+        /// <param name="token">string Token</param>
+        /// <returns>bool status</returns>
+        [HttpPost, Route("tokenIsValid")]
+        public IActionResult TokenIsValid(string token) => Ok(new { data = PublicFunction.ValidateToken(token).ToString() });
 
-        [HttpGet, Route("test")]
-        public bool TokenIsValidw()
-        {
-            return true;
-        }
     }
 }

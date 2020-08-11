@@ -6,7 +6,7 @@ app.factory("ShareData", function () {
     return { value: 0 }
 });
 
-app.config(["$routeProvider", "$locationProvider", function ($routeProvider, $locationProvider, Service, $http) {
+app.config(["$routeProvider", "$locationProvider", function ( $routeProvider, $locationProvider) {
 
     $routeProvider.when("/Login", {
         templateUrl: "Home/Login",
@@ -18,24 +18,29 @@ app.config(["$routeProvider", "$locationProvider", function ($routeProvider, $lo
         controller: "AdminController"
     });
 
+    $routeProvider.otherwise({
+        redirectTo: "/Login"
+    });
+
     $locationProvider.html5Mode({
         enabled: true,
         requireBase: false
     });
 
-    if (localStorage.getItem("jwtToken") == null)
-        $routeProvider.otherwise({
-            redirectTo: "/Login"
-        });
 
-    $.ajax({
-        type: "Get",
+    //if (localStorage.getItem("jwtToken") == null)
+
+    /*$.ajax({
+        type: "post",
         url: `${location.protocol}//${location.host}/api/Authentication/tokenIsValid`,
-        headers: { "Authorization": "Bearer " + localStorage.getItem("jwtToken") },
+        data: { "token" : localStorage.getItem("jwtToken")+"" },
         success: function (response) {
-            if (response != null) {
+            alert(response);
+
+            if (response) {
+                
                 $routeProvider.otherwise({
-                    redirectTo: "/Login"
+                    redirectTo: "/admin"
                 });
                 return true;
             }
@@ -52,6 +57,6 @@ app.config(["$routeProvider", "$locationProvider", function ($routeProvider, $lo
                 redirectTo: "/Login"
             });
         }
-    });
+    });*/
 
 }]);

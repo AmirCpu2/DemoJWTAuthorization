@@ -11,7 +11,11 @@
                 <span class="login100-form-title p-b-41">
                     Account Login
                 </span>
-                <form class="login100-form validate-form p-b-33 p-t-5"  ng-controller="LoginController">
+                <form class="login100-form validate-form p-b-33 p-t-5" action="" id="LoginForm" ng-controller="LoginController">
+
+                    <div class="alert alert-danger" role="alert" ng-show="Error">
+                        {{Message}}
+                    </div>
 
                     <div class="wrap-input100 validate-input" data-validate="Enter username">
                         <input asp-for="UserName" class="input100" type="text" autocomplete="on" placeholder="User name" ng-model="UserName" />

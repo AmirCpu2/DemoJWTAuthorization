@@ -65,6 +65,9 @@ namespace DemoJWTAuthorization.Models.VM
     {
         public static Account Map(MM.Account entity) 
         {
+            if (entity == null)
+                return null;
+
             return new Account {
                 Id = entity.Id,
                 UserName = entity.UserName,
@@ -79,6 +82,9 @@ namespace DemoJWTAuthorization.Models.VM
 
         public static MM.Account Map(Account entity)
         {
+            if (entity == null)
+                return null;
+
             return new MM.Account
             {
                 Id = entity.Id,
@@ -92,7 +98,7 @@ namespace DemoJWTAuthorization.Models.VM
             };
         }
 
-        public static MM.Account Map(AccountLogin entity) => new MM.Account() { UserName=entity.UserName, Password = entity.Password };
+        public static MM.Account Map([Required]AccountLogin entity) => new MM.Account() { UserName=entity.UserName, Password = entity.Password };
     }
 
     internal class AccountRepository

@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Security.Cryptography;
@@ -31,6 +31,25 @@ namespace DemoJWTAuthorization
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            /*
+            services.AddAuthorization(op => {
+
+                if (op.InvokeHandlersAfterFailure) 
+                {
+                    filterContext.Controller.TempData["ErrorMessage"] = "شما می بایست دوباره وارد شوید!";
+                    filterContext.Result = new RedirectToRouteResult(
+                        new System.Web.Routing.RouteValueDictionary
+                        {
+                            {"area", ""},
+                            {"controller", "Home"},
+                            {"action", "Login"}
+                        });
+
+                    SystemLogBLL.Log(new SystemLog(LoginData.Instance) { LogType = Enums.LogType.LogoutTimeout, Action = action, Controller = controller, Area = area });
+                    base.OnActionExecuting(filterContext); return;
+                }
+            });*/
+
             services.AddControllersWithViews();
 
             services.AddControllers();
@@ -49,7 +68,7 @@ namespace DemoJWTAuthorization
                         ValidIssuer = "http://localhost:44386",
                         ValidAudience = "http://localhost:44386",
                         IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("P@ssM0rdKeyAuthorization"))
-
+                        
                     };
                 });
 

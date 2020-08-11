@@ -9,7 +9,9 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using VM = DemoJWTAuthorization.Models.VM;
 using MM = DemoJWTAuthorization.Models.DAL;
-
+using System.Data;
+using System.IdentityModel.Tokens.Jwt;
+using Microsoft.IdentityModel.Tokens;
 
 namespace DemoJWTAuthorization.Controllers
 {
@@ -17,11 +19,14 @@ namespace DemoJWTAuthorization.Controllers
     {
         private readonly ILogger<HomeController> _logger;
         private MM.Context _context;
+        private readonly IAuthorizationService _authorizationService;
+        //private readonly IDocumentRepos itory _documentRepository;
 
-        public HomeController(ILogger<HomeController> logger, MM.Context context)
+        public HomeController(ILogger<HomeController> logger, MM.Context context, IAuthorizationService authorizationService)
         {
             _logger = logger;
             _context = context;
+            _authorizationService = authorizationService;
         }
 
         public IActionResult Index()
@@ -34,9 +39,19 @@ namespace DemoJWTAuthorization.Controllers
             return PartialView();
         }
 
-        public IActionResult Admin()
+        public ActionResult Admin()
         {
-            return View();
+           /* //GetToken
+            this.Request.Headers.TryGetValue("Authorization", out var aut);
+
+            var token = aut.ToString()?.Split(" ");
+
+            if (aut.ToString() == null || token.Length < 2 || !PublicFunction.ValidateToken(token[1]))
+                return RedirectToAction("Login");
+                */
+            return PartialView();
         }
+
+
     }
 }
