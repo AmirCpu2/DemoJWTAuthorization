@@ -150,8 +150,8 @@ namespace DemoJWTAuthorization.Models.VM
 
         internal Account GetById(int Id)
         {
-
-            return Mapper.Map(DB.Accounts.Where(q => q.Id == Id).FirstOrDefault());
+            var account = DB.Accounts.Where(q => q.Id == Id).FirstOrDefault();
+            return Mapper.Map(account);
         }
 
         internal IEnumerable<Account> GetAll() => DB.Accounts.ToList().Select(Mapper.Map);
@@ -170,6 +170,11 @@ namespace DemoJWTAuthorization.Models.VM
             Add(Mapper.Map(entity));
 
             return true;
+        }
+
+        internal Person GetPersonById(int id)
+        {
+            return DB.People.Where(q => q.Id.Equals(DB.Accounts.Where(q => q.Id == id).FirstOrDefault().PersonID)).FirstOrDefault();
         }
     }
 }

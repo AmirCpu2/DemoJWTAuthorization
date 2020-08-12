@@ -1,25 +1,46 @@
 ﻿<html xmlns="http://www.w3.org/1999/xhtml">
-    <head>
-        <meta charset="utf-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
-        <title>@ViewData["Title"] - WebApp</title>
-        <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
-        <link rel="stylesheet" href="~/css/site.css" />
-        <script src="~/js/public/angular.js"></script>
-        <script src="~/js/public/angular-route.js"></script>
-        <script src="~/Angular/Module.js"></script>
-        <script src="~/Angular/Service.js"></script>
-        <script src="~/Angular/controller/LoginController.js"></script>
-        <script src="~/Angular/controller/AdminController.js"></script>
-    </head>
-    <body>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <title>@ViewData["Title"]</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" />
+    <script src="~/js/public/angular.js"></script>
+    <script src="~/js/public/angular-route.js"></script>
+    <script src="~/Angular/Module.js"></script>
+    <script src="~/Angular/Service.js"></script>
+    <script src="~/Angular/controller/LoginController.js"></script>
+    <script src="~/Angular/controller/AdminController.js"></script>
+    <script src="~/demo/demo.js"></script>
+
+    <meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0, shrink-to-fit=no' name='viewport' />
+    <!-- CSS Files -->
+    <link href="~/css/paper-dashboard.css?v=2.0.1" rel="stylesheet" />
+    <!-- CSS Just for demo purpose, don't include it in your project -->
+    <link href="~/demo/demo.css" rel="stylesheet" />
+    <script>
+
         
-                @RenderBody()
-            
-       
-        <script src="~/lib/jquery/dist/jquery.min.js"></script>
-        <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-        @RenderSection("Scripts", required: false)
-    </body>
+        
+    </script>
+    @RenderSection("OnHead", required: false)
+</head>
+<body>
+
+    @RenderBody()
+
+
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <!--Core JS Files-->
+    <script src="~/js/core/popper.min.js"></script>
+
+    <!--script src="~/js/plugins/perfect-scrollbar.jquery.min.js"></script-->
+    <!--Chart JS-->
+    <script src="~/js/plugins/chartjs.min.js"></script>
+    <!-- Control Center for Now Ui Dashboard: parallax effects, scripts for the example pages etc -->
+    <!--script src="~/js/paper-dashboard.min.js?v=2.0.1" type="text/javascript"></script-->
+    @RenderSection("Scripts", required: false)
+</body>
 </html>

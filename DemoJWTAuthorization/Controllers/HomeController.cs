@@ -12,6 +12,7 @@ using MM = DemoJWTAuthorization.Models.DAL;
 using System.Data;
 using System.IdentityModel.Tokens.Jwt;
 using Microsoft.IdentityModel.Tokens;
+using Microsoft.Web.Mvc;
 
 namespace DemoJWTAuthorization.Controllers
 {
@@ -39,16 +40,18 @@ namespace DemoJWTAuthorization.Controllers
             return PartialView();
         }
 
+        
         public ActionResult Admin()
         {
-           /* //GetToken
-            this.Request.Headers.TryGetValue("Authorization", out var aut);
+            /* //GetToken
+             this.Request.Headers.TryGetValue("Authorization", out var aut);
 
-            var token = aut.ToString()?.Split(" ");
+             var token = aut.ToString()?.Split(" ");
 
-            if (aut.ToString() == null || token.Length < 2 || !PublicFunction.ValidateToken(token[1]))
-                return RedirectToAction("Login");
-                */
+             if (aut.ToString() == null || token.Length < 2 || !PublicFunction.ValidateToken(token[1]))
+                 return RedirectToAction("Login");
+                 */
+
             return PartialView();
         }
 

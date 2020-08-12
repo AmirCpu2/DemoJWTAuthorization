@@ -120,7 +120,7 @@ namespace DemoJWTAuthorization
                 endpoints.MapControllers();
             });*/
 
-            app.UseEndpoints(endpoints =>
+            app.UseEndpoints(endpoints =>   
             {
                 endpoints.MapControllerRoute(
                     name: "default",
@@ -130,5 +130,6 @@ namespace DemoJWTAuthorization
             //config Core for develop
             app.UseCors("DeveloperCors");
         }
+
     }
 }

@@ -6,7 +6,11 @@
     };
 
     this.getAccount = function(id) {
-        return $http.get(`${location.protocol}//${location.host}/api/Account/Get/` + id);
+        return $http({
+            method: "Get",
+            headers: {'Authorization': `Bearer ${localStorage.getItem("jwtToken")}`},
+            url: `${location.protocol}//${location.host}/api/Account/getPerson?id=${id}`
+        });
     };
     
     this.TokenIsValid = function (Token) {

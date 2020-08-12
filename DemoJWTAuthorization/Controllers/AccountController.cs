@@ -33,10 +33,16 @@ namespace DemoJWTAuthorization.Controllers
             _account = new AccountRepository(context);
         }
 
-        [HttpGet,Authorize]
-        public IActionResult GetAccount(int id)
+        [HttpGet("get"),Authorize]
+        public IActionResult Get(int id)
         {
             return Content(JObject.FromObject(_account.GetById(id)).ToString());
+        }
+
+        [HttpGet("getPerson"),Authorize]
+        public IActionResult GetPerson(int id)
+        {
+            return Content(JObject.FromObject(_account.GetPersonById(id)).ToString());
         }
 
         [HttpPost, Route("add")]
