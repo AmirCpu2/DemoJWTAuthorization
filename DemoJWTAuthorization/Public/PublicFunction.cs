@@ -43,5 +43,14 @@ namespace DemoJWTAuthorization
                 IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("P@ssM0rdKeyAuthorization")) // The same key as the one that generate the token
             };
         }
+
+        public static Stack<int> ArrayToStack(List<int> array)
+        {
+            var v = new Stack<int>();
+
+            array.ForEach(q => v.Push(q));
+
+            return v;
+        }
     }
 }

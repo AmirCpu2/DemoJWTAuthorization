@@ -2,7 +2,11 @@
 
 
     this.getTaskList = function() {
-        return $http.get(`${location.protocol}//${location.host}/api/Task/GetAll`);
+        return $http({
+            method: "Get",
+            headers: { 'Authorization': `Bearer ${localStorage.getItem("jwtToken")}` },
+            url: `${location.protocol}//${location.host}/api/Task/getTest`
+        });
     };
 
     this.getAccount = function(id) {
@@ -10,6 +14,22 @@
             method: "Get",
             headers: {'Authorization': `Bearer ${localStorage.getItem("jwtToken")}`},
             url: `${location.protocol}//${location.host}/api/Account/getPerson?id=${id}`
+        });
+    };
+
+    this.getAllTask = function () {
+        return $http({
+            method: "Get",
+            headers: { 'Authorization': `Bearer ${localStorage.getItem("jwtToken")}` },
+            url: `${location.protocol}//${location.host}/api/Task/getAll`
+        });
+    };
+
+    this.getPerformanse = function () {
+        return $http({
+            method: "Get",
+            headers: { 'Authorization': `Bearer ${localStorage.getItem("jwtToken")}` },
+            url: `${location.protocol}//${location.host}/api/Task/getPerformanse`
         });
     };
     
