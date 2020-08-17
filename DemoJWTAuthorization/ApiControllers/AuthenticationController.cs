@@ -78,42 +78,32 @@ namespace DemoJWTAuthorization.Controllers
         /// <summary>
         /// This Method From LoginOut User
         /// </summary>
-        /// <param name="token">Account Model</param>
-        /// <returns>bool state</returns>
-        [HttpPost, Route("loginOut")]
-        public IActionResult LogOut([FromBody, Required]  VM.AccountLogin account)
+        /// <param name="token">string jwt token</param>
+        /// <returns>token state</returns>
+        [HttpPost, Route("logout"),Authorize]
+        public IActionResult LogOut([FromHeader,Required] string Authorization)
         {
-
-            //Get Hash PassWord
-            var hashPassword = _account.GetByUserName(account.UserName)?.Password;
-
-            //UserName ,PassWord Check
-            if (hashPassword == null || !hashPassword.Equals(PublicFunction.GetHash(account.Password)))
-                return Unauthorized();
-
-            //Add Log
-            _accountLog.AddForse(_account.GetByUserName(account.UserName).Id, Public.Enums.AccountLogState.logout);
-
-            //Logined
-            var secretKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("P@ssM0rdKeyAuthorization"));
-            var signinCredenrials = new SigningCredentials(secretKey, SecurityAlgorithms.HmacSha256);
-            var claimes = new List<Claim>
+            try
             {
-                new Claim(ClaimTypes.Name,account.UserName),
-                new Claim(ClaimTypes.Role,"Manager")
-            };
 
-            var tokenOptions = new JwtSecurityToken(
-                issuer: $"http://{this.Request.Host}",
-                audience: $"http://{this.Request.Host}",
-                claims: claimes,
-                expires: DateTime.Now.AddMinutes(20),
-                signingCredentials: signinCredenrials
-            );
+                var token = Authorization.Split(" ").Length > 1 ? Authorization.Split(" ")[1] : null; //jToken.GetValue("token").ToString();
 
-            var tokenString = new JwtSecurityTokenHandler().WriteToken(tokenOptions);
+                //Validate
+                if (String.IsNullOrEmpty(token) || !PublicFunction.ValidateToken(token))
+                    return Unauthorized();
 
-            return Ok();
+                //Get UserName Of Peyload
+                var username = PublicFunction.DecodeToken(token).Claims.First(q => q.Type == ClaimTypes.Name).Value;
+
+                //Add Log
+                _accountLog.AddForse(_account.GetByUserName(username).Id, Public.Enums.AccountLogState.logout);
+
+                return Ok(PublicFunction.GetPrincipalFromExpiredToken(token));
+            }
+            catch 
+            {
+                return Unauthorized();
+            }
         }
 
         /// <summary>

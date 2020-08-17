@@ -28,35 +28,5 @@ app.config(["$routeProvider", "$locationProvider", function ( $routeProvider, $l
     });
 
 
-    //if (localStorage.getItem("jwtToken") == null)
-
-    /*$.ajax({
-        type: "post",
-        url: `${location.protocol}//${location.host}/api/Authentication/tokenIsValid`,
-        data: { "token" : localStorage.getItem("jwtToken")+"" },
-        success: function (response) {
-            alert(response);
-
-            if (response) {
-                
-                $routeProvider.otherwise({
-                    redirectTo: "/admin"
-                });
-                return true;
-            }
-            else {
-                localStorage.removeItem("jwtToken");
-                return $routeProvider.otherwise({
-                    redirectTo: "/Login"
-                });
-            }
-        },
-        error: function error() {
-            localStorage.removeItem("jwtToken");
-            return $routeProvider.otherwise({
-                redirectTo: "/Login"
-            });
-        }
-    });*/
-
+    
 }]);

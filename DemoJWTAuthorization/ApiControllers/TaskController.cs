@@ -32,7 +32,10 @@ namespace DemoJWTAuthorization.Controllers
             };
         }
 
-
+        /// <summary>
+        /// Get Performanse
+        /// </summary>
+        /// <returns>Performans List</returns>
         [Route("getPerformanse"), Authorize]
         public List<List<int>> GetPerformanse()
         {
@@ -42,14 +45,6 @@ namespace DemoJWTAuthorization.Controllers
                 new List<int> {320, 340, 365, 360, 370, 385, 390, 384, 408, 420},
                 new List<int> {370, 394, 415, 409, 425, 445, 460, 450, 478, 484}
             };
-        }
-
-        [Route("getTest")]
-        public IActionResult GetTest()
-        {
-            return Content("[{300, 310, 316, 322, 330, 326, 333, 345, 338, 354}," +
-                            "{320, 340, 365, 360, 370, 385, 390, 384, 408, 420}," +
-                            "{370, 394, 415, 409, 425, 445, 460, 450, 478, 484}]");
         }
 
     }

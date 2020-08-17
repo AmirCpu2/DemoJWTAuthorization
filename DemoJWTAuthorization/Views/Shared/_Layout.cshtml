@@ -12,35 +12,23 @@
     <script src="~/Angular/Service.js"></script>
     <script src="~/Angular/controller/LoginController.js"></script>
     <script src="~/Angular/controller/AdminController.js"></script>
-    <script src="~/demo/demo.js"></script>
-
     <meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0, shrink-to-fit=no' name='viewport' />
     <!-- CSS Files -->
     <link href="~/css/paper-dashboard.css?v=2.0.1" rel="stylesheet" />
     <!-- CSS Just for demo purpose, don't include it in your project -->
     <link href="~/demo/demo.css" rel="stylesheet" />
-    <script>
-
-        
-        
-    </script>
+    
     @RenderSection("OnHead", required: false)
 </head>
 <body>
 
     @RenderBody()
 
-
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <!--Core JS Files-->
     <script src="~/js/core/popper.min.js"></script>
-
-    <!--script src="~/js/plugins/perfect-scrollbar.jquery.min.js"></script-->
-    <!--Chart JS-->
     <script src="~/js/plugins/chartjs.min.js"></script>
-    <!-- Control Center for Now Ui Dashboard: parallax effects, scripts for the example pages etc -->
-    <!--script src="~/js/paper-dashboard.min.js?v=2.0.1" type="text/javascript"></script-->
     @RenderSection("Scripts", required: false)
 </body>
 </html>

@@ -4,9 +4,12 @@ using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Http.Extensions;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -31,29 +34,19 @@ namespace DemoJWTAuthorization
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            /*
+            
             services.AddAuthorization(op => {
-
                 if (op.InvokeHandlersAfterFailure) 
                 {
-                    filterContext.Controller.TempData["ErrorMessage"] = "شما می بایست دوباره وارد شوید!";
-                    filterContext.Result = new RedirectToRouteResult(
-                        new System.Web.Routing.RouteValueDictionary
-                        {
-                            {"area", ""},
-                            {"controller", "Home"},
-                            {"action", "Login"}
-                        });
-
-                    SystemLogBLL.Log(new SystemLog(LoginData.Instance) { LogType = Enums.LogType.LogoutTimeout, Action = action, Controller = controller, Area = area });
-                    base.OnActionExecuting(filterContext); return;
+                    new RedirectToActionResult("Index","Home",new { ErrorMessage = "Token Expyre,Try Logined." });
                 }
-            });*/
+            });
 
             services.AddControllersWithViews();
 
             services.AddControllers();
 
+            #region Authentication
             //Creat Midelware Authentication
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
                 .AddJwtBearer(op => {
@@ -71,6 +64,7 @@ namespace DemoJWTAuthorization
                         
                     };
                 });
+            
 
             services.AddCors(op => {
 
@@ -82,8 +76,7 @@ namespace DemoJWTAuthorization
                         .Build();
                     });
             });
-
-            services.AddMvc();
+            #endregion
 
             #region Db Context
 
@@ -91,6 +84,8 @@ namespace DemoJWTAuthorization
             { op.UseSqlServer("Data Source =.;Initial Catalog=silkrood_DemoWJTAutorization;Integrated Security=true;user id=sa;password=B@mdad!@#246;"); });
 
             #endregion
+
+            services.AddMvc();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -115,17 +110,20 @@ namespace DemoJWTAuthorization
             app.UseAuthentication();
             app.UseAuthorization();
 
-            /*app.UseEndpoints(endpoints =>
-            {
-                endpoints.MapControllers();
-            });*/
-
             app.UseEndpoints(endpoints =>   
             {
                 endpoints.MapControllerRoute(
                     name: "default",
                     pattern: "{controller=Home}/{action=Index}/{id?}");
             });
+
+            //app.MapWhen(context => PublicFunction.ValidateToken(context.Request.Headers["Authorization"]) && 
+            //            !context.Request.GetDisplayUrl().Contains("Login") , (new RedirectToActionResult("Index", "Home", new { ErrorMessage = "Token Expyre,Try Logined." }) );
+
+            /*app.UseEndpoints(endpoints =>
+            {
+                endpoints.MapControllers();
+            });*/
 
             //config Core for develop
             app.UseCors("DeveloperCors");

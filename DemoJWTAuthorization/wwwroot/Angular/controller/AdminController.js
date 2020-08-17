@@ -1,66 +1,51 @@
 ﻿app.controller("AdminController", function ($scope, $location, Service, ShareData) {
 
+
+    /********************
+     * Begin init Value
+     ********************/
+
     //Get Token now
     var Token = localStorage.getItem("jwtToken");
+
     //Get Account Id now
     var userId = localStorage.getItem("userId");
 
-    //Check Validate Token
-    if (Token != undefined || Token != null || userId!=null) {
-        Service.TokenIsValid(Token).then(function success(re) {
-            if (re.data == 'False')
-                location.href = `${location.protocol}//${location.host}` + '#/Login';
-            else
-                $('#ContentBody').show();
-        }, function error() {
-                location.href = `${location.protocol}//${location.host}` + '#/Login';
-        });
-    }
-    else
+    //init task list
+    $scope.Tasks = [];
+
+    //init Chart
+    var Charts = [{
+        borderColor: "#6bd098",
+        backgroundColor: "#6bd098",
+        pointRadius: 0,
+        pointHoverRadius: 0,
+        borderWidth: 3,
+        data: null
+    },
     {
-        location.href = `${location.protocol}//${location.host}` + '#/Login';
-    }
-
-    Service.getAccount(userId).then(
-        function success(re) {
-            console.log(re.data.Fname + " " + re.data.Lname);
-            $scope.FullName = re.data.Fname + " " + re.data.Lname;
-        }, function error() {
-            localStorage.removeItem("jwtToken");
-            location.href = `${location.protocol}//${location.host}` + '#/Login';
-        }
-    );
-
-    $scope.logout = function () {
-
-        Service.logout(Token)
-            .then(function success(response) {
-                localStorage.removeItem("jwtToken");
-                localStorage.removeItem("userId");
-                location.href = `${location.protocol}//${location.host}` + '#/Login';
-            }, function error() {
-                localStorage.removeItem("jwtToken");
-                localStorage.removeItem("userId");
-                location.href = `${location.protocol}//${location.host}` + '#/Login';
-            });
-    }
+        borderColor: "#f17e5d",
+        backgroundColor: "#f17e5d",
+        pointRadius: 0,
+        pointHoverRadius: 0,
+        borderWidth: 3,
+        data: null
+    },
+    {
+        borderColor: "#fcc468",
+        backgroundColor: "#fcc468",
+        pointRadius: 0,
+        pointHoverRadius: 0,
+        borderWidth: 3,
+        data: null
+    }];
 
 
-    $scope.getAccount = function () {
+    /************************
+     * Begin init Functions
+     ************************/
 
-        Service.getAccount(userId).then(
-            function success(re) {
-                console.log(re.data.Fname + " " + re.data.Lname);
-                $scope.FullName = re.data.Fname + " " + re.data.Lname;
-            }, function error() {
-                localStorage.removeItem("jwtToken");
-                location.href = `${location.protocol}//${location.host}` + '#/Login';
-            }
-        );
-    }
-
-
-    function loadChart (data) {
+    function loadChart(data) {
 
         chartColor = "#FFFFFF";
 
@@ -121,48 +106,73 @@
 
     }
 
+    $scope.logout = function () {
+        console.log("One:" + localStorage.getItem("jwtToken"));
+        Service.logout()
+            .then(function success(response) {
+                localStorage.removeItem("jwtToken");
+                localStorage.removeItem("userId");
+                location.href = `${location.protocol}//${location.host}` + '#/Login';
+            }, function error() {
+                localStorage.removeItem("jwtToken");
+                localStorage.removeItem("userId");
+                location.href = `${location.protocol}//${location.host}` + '#/Login';
+            });
+    }
 
-    //init task list
-    $scope.Tasks = [];
+    $scope.getAccount = function () {
 
-    Service.getAllTask().then(
-        function success(re) {
-            console.log('getAllTask:');
-            console.log(re.data);
-            $scope.Tasks = re.data;
-            console.log('scope1!:');
-            console.log($scope.Tasks[0].description);
-            console.log($scope.Tasks[0].agent);
+        Service.getAccount(userId).then(
+            function success(re) {
+                console.log(re.data.Fname + " " + re.data.Lname);
+                $scope.FullName = re.data.Fname + " " + re.data.Lname;
+            }, function error() {
+                localStorage.removeItem("jwtToken");
+                location.href = `${location.protocol}//${location.host}` + '#/Login';
+            }
+        );
+    }
+
+    
+    /************************
+     * Start Main code
+     ************************/
+
+    //Check Validate Token
+    if (Token != undefined || Token != null || userId != null)
+    {
+        Service.TokenIsValid(Token).then(function success(re) {
+            if (re.data == 'False')
+                location.href = `${location.protocol}//${location.host}` + '#/Login';
+            else
+                $('#ContentBody').show();
         }, function error() {
-            //localStorage.removeItem("jwtToken");
-            //location.href = `${location.protocol}//${location.host}` + '#/Login';
+                location.href = `${location.protocol}//${location.host}` + '#/Login';
+        });
+    }
+    else
+    {
+        location.href = `${location.protocol}//${location.host}` + '#/Login';
+    }
+
+    Service.getAccount(userId).then(
+        function success(re) {
+            console.log(re.data.Fname + " " + re.data.Lname);
+            $scope.FullName = re.data.Fname + " " + re.data.Lname;
+        }, function error() {
+            localStorage.removeItem("jwtToken");
+            location.href = `${location.protocol}//${location.host}` + '#/Login';
         }
     );
-
-    var Charts = [{
-        borderColor: "#6bd098",
-        backgroundColor: "#6bd098",
-        pointRadius: 0,
-        pointHoverRadius: 0,
-        borderWidth: 3,
-        data: [ 300, 310, 316, 322, 330, 326, 333, 345, 338, 354]
-        },
-        {
-            borderColor: "#f17e5d",
-            backgroundColor: "#f17e5d",
-            pointRadius: 0,
-            pointHoverRadius: 0,
-            borderWidth: 3,
-            data: [300, 310, 316, 322, 330, 326, 333, 345, 338, 354]
-        },
-        {
-            borderColor: "#fcc468",
-            backgroundColor: "#fcc468",
-            pointRadius: 0,
-            pointHoverRadius: 0,
-            borderWidth: 3,
-            data: [300, 310, 316, 322, 330, 326, 333, 345, 338, 354]
-        }];
+    
+    Service.getAllTask().then(
+        function success(re) {
+            $scope.Tasks = re.data;
+        }, function error() {
+            localStorage.removeItem("jwtToken");
+            location.href = `${location.protocol}//${location.host}` + '#/Login';
+        }
+    );
 
     Service.getPerformanse().then(
         function success(re) {

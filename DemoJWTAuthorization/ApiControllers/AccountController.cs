@@ -56,6 +56,5 @@ namespace DemoJWTAuthorization.Controllers
             return Content(JObject.FromObject(_account.Add(account)).ToString());
         }
 
-
     }
 }

@@ -12,7 +12,7 @@
     this.getAccount = function(id) {
         return $http({
             method: "Get",
-            headers: {'Authorization': `Bearer ${localStorage.getItem("jwtToken")}`},
+            headers: {'Authorization': `Bearer ${localStorage.getItem("jwtToken")}` },
             url: `${location.protocol}//${location.host}/api/Account/getPerson?id=${id}`
         });
     };
@@ -51,12 +51,15 @@
         })
     };
 
-    this.logout = function (token)
+    this.logout = function ()
     {
+        console.log(localStorage.getItem("jwtToken"));
+
         return $http({
             method: "Post",
+            headers: { 'Authorization': `Bearer ${localStorage.getItem("jwtToken")}` },
             url: `${location.protocol}//${location.host}/api/Authentication/logout`,
-            data: { "token": token }
+            data: { "token": localStorage.getItem("jwtToken")}
         })
     }
 

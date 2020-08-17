@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
+using System.Security.Claims;
 using System.Security.Cryptography;
 using System.Security.Principal;
 using System.Text;
@@ -44,6 +45,19 @@ namespace DemoJWTAuthorization
             };
         }
 
+        public static ClaimsPrincipal GetPrincipalFromExpiredToken(string token)
+        {
+            
+            var tokenHandler = new JwtSecurityTokenHandler();
+            SecurityToken securityToken;
+            var principal = tokenHandler.ValidateToken(token, GetValidationParameters(), out securityToken);
+            var jwtSecurityToken = securityToken as JwtSecurityToken;
+            if (jwtSecurityToken == null || !jwtSecurityToken.Header.Alg.Equals(SecurityAlgorithms.HmacSha256, StringComparison.InvariantCultureIgnoreCase))
+                throw new SecurityTokenException("Invalid token");
+
+            return principal;
+        }
+
         public static Stack<int> ArrayToStack(List<int> array)
         {
             var v = new Stack<int>();
@@ -51,6 +65,12 @@ namespace DemoJWTAuthorization
             array.ForEach(q => v.Push(q));
 
             return v;
+        }
+
+        public static JwtSecurityToken DecodeToken(string token) {
+
+            var handler = new JwtSecurityTokenHandler();
+            return String.IsNullOrEmpty(token)? null : handler.ReadToken(token) as JwtSecurityToken;
         }
     }
 }
