@@ -32,6 +32,29 @@ namespace DemoJWTAuthorization.Models.DAL
             modelBuilder.Entity<Person>().ToTable("Person", "Profile");
             modelBuilder.Entity<Account>().ToTable("Account", "SSO");
             modelBuilder.Entity<AccountLog>().ToTable("AccountLog", "SSO");
+
+            //Init user
+            modelBuilder.Entity<Person>().HasData(
+                new Person
+                {
+                    Id = 1,
+                    Fname = "demo",
+                    Email = "demo@email.com"
+                }
+            );
+
+            modelBuilder.Entity<Account>().HasData(
+                new Account
+                {
+                    Id = 1,
+                    PersonID = 1,
+                    Active = true,
+                    UserName = "demo",
+                    Password = PublicFunction.GetHash("123456*")
+                }
+            );
+
+
         }
 
     }

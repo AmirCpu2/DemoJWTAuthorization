@@ -34,7 +34,7 @@ namespace DemoJWTAuthorization.Controllers
             return PartialView();
         }
 
-        public ActionResult Admin()
+        public IActionResult Admin()
         {
             return PartialView();
         }

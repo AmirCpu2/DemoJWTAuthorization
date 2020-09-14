@@ -58,8 +58,8 @@ namespace DemoJWTAuthorization
                         ValidateLifetime = true,
                         ValidateIssuerSigningKey = true,
 
-                        ValidIssuer = "http://localhost:44386",
-                        ValidAudience = "http://localhost:44386",
+                        ValidIssuer = "http://demo.silkrood.ir",
+                        ValidAudience = "http://demo.silkrood.ir",
                         IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("P@ssM0rdKeyAuthorization"))
                         
                     };
@@ -80,8 +80,9 @@ namespace DemoJWTAuthorization
 
             #region Db Context
 
-            services.AddDbContext<MM.Context>(op =>
-            { op.UseSqlServer("Data Source =.;Initial Catalog=silkrood_DemoWJTAutorization;Integrated Security=true;user id=sa;password=B@mdad!@#246;"); });
+            services.AddDbContext<MM.Context>(op => { 
+                op.UseSqlServer("Data Source=silkrood.ir;user id=silkrood_store;password=P@ssM0rd;Initial Catalog=silkrood_DemoWJTAutorization;"); 
+            });
 
             #endregion
 
